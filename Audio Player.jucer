@@ -3,12 +3,15 @@
 <JUCERPROJECT id="QzPmC7" name="Audio Player" projectType="guiapp" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
   <MAINGROUP id="n8IQEu" name="Audio Player">
-    <GROUP id="{AC5F56A1-D6A3-6248-08C2-BDF13289B890}" name="Source">
-      <FILE id="XPFvDL" name="Main.cpp" compile="1" resource="0" file="E:/youtube video/for ass 2/Main.cpp"/>
-      <FILE id="pOuoex" name="MainComponent.cpp" compile="1" resource="0"
-            file="E:/youtube video/for ass 2/MainComponent.cpp"/>
-      <FILE id="YrifX8" name="MainComponent.h" compile="0" resource="0" file="E:/youtube video/for ass 2/MainComponent.h"/>
-    </GROUP>
+    <GROUP id="{AC5F56A1-D6A3-6248-08C2-BDF13289B890}" name="Source"/>
+    <FILE id="yfXlmm" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+    <FILE id="bwLZgd" name="MainComponent.cpp" compile="1" resource="0"
+          file="Source/MainComponent.cpp"/>
+    <FILE id="O1xQjC" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+    <FILE id="V2MAdr" name="PlayerAudio.cpp" compile="1" resource="0" file="Source/PlayerAudio.cpp"/>
+    <FILE id="OoeNFN" name="PlayerAudio.h" compile="0" resource="0" file="Source/PlayerAudio.h"/>
+    <FILE id="itQOeq" name="PlayerGUI.cpp" compile="1" resource="0" file="Source/PlayerGUI.cpp"/>
+    <FILE id="Va0w5a" name="PlayerGUI.h" compile="0" resource="0" file="Source/PlayerGUI.h"/>
   </MAINGROUP>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
@@ -42,6 +45,25 @@
         <MODULEPATH id="juce_graphics" path="../../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../../../../JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2022>
+    <VS2022 targetFolder="Builds/VisualStudio2022_1">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_devices" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_formats" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_processors" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_utils" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_core" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_data_structures" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_events" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_graphics" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_gui_basics" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_gui_extra" path="C:\JUCE\modules"/>
       </MODULEPATHS>
     </VS2022>
   </EXPORTFORMATS>
