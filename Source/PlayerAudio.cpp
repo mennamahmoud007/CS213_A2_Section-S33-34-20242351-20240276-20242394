@@ -81,13 +81,24 @@ double PlayerAudio::getLength() const
 {
     return transportSource.getLengthInSeconds();
 }
+
+void PlayerAudio::goToEnd()
+{
+    if (readerSource != nullptr && readerSource->getAudioFormatReader() != nullptr)
+    {
+        auto* reader = readerSource->getAudioFormatReader();
+        double length = reader->lengthInSamples / reader->sampleRate;
+        transportSource.setPosition(length - 0.1);
+    }
+}
+
 bool PlayerAudio::ismuted() const
 {
     return muted; 
 }
 void PlayerAudio::setmute(bool newMuted)
 {
-    if (!newMuted)
+    if (newMuted)
     {
         lastGain = transportSource.getGain();
         transportSource.setGain(0.0f);
@@ -107,6 +118,8 @@ void PlayerAudio::setLooping(bool willLoop)
         readerSource->setLooping(willLoop);
     }
 }
+
+
 
 
 
