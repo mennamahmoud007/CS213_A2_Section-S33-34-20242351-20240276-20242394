@@ -3,7 +3,7 @@
 PlayerGUI::PlayerGUI()
 {
     // Add buttons
-    for (auto* btn : { &loadButton, &restartButton , &stopButton, &muteButton })
+    for (auto* btn : { &loadButton, &restartButton , &stopButton, &muteButton, &loopButton })
     {
         btn->addListener(this);
         addAndMakeVisible(btn);
@@ -43,29 +43,15 @@ void PlayerGUI::paint(juce::Graphics& g)
 
 void PlayerGUI::resized()
 {
-    auto area = getLocalBounds().reduced(20);
-
-    
-    int buttonWidth = 100;
-    int buttonHeight = 40;
-    int buttonSpacing = 20; 
-
-    
-    int x = 20;
     int y = 20;
+    loadButton.setBounds(20, y, 100, 40);
+    restartButton.setBounds(140, y, 80, 40);
+    stopButton.setBounds(240, y, 80, 40);
+    loopButton.setBounds(340, y, 80, 40);
+    /*prevButton.setBounds(340, y, 80, 40);
+    nextButton.setBounds(440, y, 80, 40);*/
 
-    loadButton.setBounds(x, y, buttonWidth, buttonHeight);
-    x += buttonWidth + buttonSpacing;
-
-    restartButton.setBounds(x, y, buttonWidth, buttonHeight);
-    x += buttonWidth + buttonSpacing;
-
-    stopButton.setBounds(x, y, buttonWidth, buttonHeight);
-    x += buttonWidth + buttonSpacing;
-
-   muteButton.setBounds(x, y, buttonWidth, buttonHeight);
-
-    volumeSlider.setBounds(20, y + buttonHeight + 40, getWidth() - 40, 30);
+    volumeSlider.setBounds(20, 100, getWidth() - 40, 30);
 }
 
 void PlayerGUI::buttonClicked(juce::Button* button)
@@ -109,6 +95,21 @@ void PlayerGUI::buttonClicked(juce::Button* button)
         bool state = !playerAudio.ismuted();
         playerAudio.setmute(state);
         muteButton.setButtonText(state ? "unMute": "Mute");
+    }
+
+    if (button == &loopButton)
+    {
+        bool willLoop = (loopButton.getButtonText() == "Loop");
+        if (willLoop)
+        {
+            loopButton.setButtonText("Unloop");
+            playerAudio.setLooping(true);
+        }
+        else
+        {
+            loopButton.setButtonText("Loop");
+            playerAudio.setLooping(false);
+        }
     }
 
 }

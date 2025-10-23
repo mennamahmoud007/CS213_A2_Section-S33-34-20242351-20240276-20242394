@@ -20,6 +20,7 @@ public:
     double getLength() const;
     void setmute(bool muted);
     bool ismuted()const;
+    void setLooping(bool willLoop);
 
 private:
     juce::AudioFormatManager formatManager;

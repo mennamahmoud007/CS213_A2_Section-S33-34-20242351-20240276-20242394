@@ -100,5 +100,13 @@ void PlayerAudio::setmute(bool newMuted)
     }
 }
 
+void PlayerAudio::setLooping(bool willLoop)
+{
+    if (readerSource != nullptr)
+    {
+        readerSource->setLooping(willLoop);
+    }
+}
+
 
 
