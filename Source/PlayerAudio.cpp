@@ -87,7 +87,7 @@ bool PlayerAudio::ismuted() const
 }
 void PlayerAudio::setmute(bool newMuted)
 {
-    if (!newMuted)
+    if (newMuted)
     {
         lastGain = transportSource.getGain();
         transportSource.setGain(0.0f);
