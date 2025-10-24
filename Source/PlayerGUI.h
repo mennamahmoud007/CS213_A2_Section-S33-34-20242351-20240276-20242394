@@ -30,8 +30,8 @@ private:
     juce::TextButton endButton{ "End" };
     juce::TextButton muteButton{ "Mute" };
     juce::TextButton loopButton{ "Loop" };
+    bool isLooping = false;
     juce::Slider volumeSlider;
-    juce::Slider positionSlider;
 
     std::unique_ptr<juce::FileChooser> fileChooser;
 

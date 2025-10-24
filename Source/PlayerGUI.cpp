@@ -15,8 +15,6 @@ PlayerGUI::PlayerGUI()
     volumeSlider.addListener(this);
     addAndMakeVisible(volumeSlider);
 
-    // Position slider
-   
 }
 
 PlayerGUI::~PlayerGUI() {}
@@ -126,16 +124,15 @@ void PlayerGUI::buttonClicked(juce::Button* button)
 
     if (button == &loopButton)
     {
-        bool willLoop = (loopButton.getButtonText() == "Loop");
-        if (willLoop)
+        isLooping = !isLooping;
+        playerAudio.setLooping(isLooping);
+        if (isLooping)
         {
-            loopButton.setButtonText("Unloop");
-            playerAudio.setLooping(true);
+            loopButton.setButtonText("UnLoop");
         }
         else
         {
             loopButton.setButtonText("Loop");
-            playerAudio.setLooping(false);
         }
     }
 
