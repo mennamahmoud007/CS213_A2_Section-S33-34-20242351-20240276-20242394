@@ -4,7 +4,8 @@
 
 class PlayerGUI : public juce::Component,
     public juce::Button::Listener,
-    public juce::Slider::Listener
+    public juce::Slider::Listener,
+    public juce::Timer
 {
 public:
     PlayerGUI();
@@ -16,6 +17,9 @@ public:
     void prepareToPlay(int samplesPerBlockExpected, double sampleRate);
     void getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFill);
     void releaseResources();
+    void timerCallback() override;
+    void sliderDragStarted(juce::Slider* slider) override;
+    void sliderDragEnded(juce::Slider* slider) override;
 
 private:
     PlayerAudio playerAudio;
@@ -31,7 +35,12 @@ private:
     juce::TextButton muteButton{ "Mute" };
     juce::TextButton loopButton{ "Loop" };
     bool isLooping = false;
+
     juce::Slider volumeSlider;
+    juce::Slider positionSlider;
+
+    juce::Label timeLabel;
+    bool isDragging = false;
 
     std::unique_ptr<juce::FileChooser> fileChooser;
 

@@ -15,6 +15,17 @@ PlayerGUI::PlayerGUI()
     volumeSlider.addListener(this);
     addAndMakeVisible(volumeSlider);
 
+    // Position slider
+    positionSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);  
+    positionSlider.addListener(this);
+    addAndMakeVisible(positionSlider);
+
+    startTimer(100);
+    timeLabel.setText("00:00 / 00:00", juce::dontSendNotification);
+    timeLabel.setJustificationType(juce::Justification::centred);
+    timeLabel.setFont(juce::Font(15.0f, juce::Font::bold));
+    addAndMakeVisible(timeLabel);
+
 }
 
 PlayerGUI::~PlayerGUI() {}
@@ -33,6 +44,50 @@ void PlayerGUI::getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFi
 void PlayerGUI::releaseResources()
 {
     playerAudio.releaseResources();
+}
+
+void PlayerGUI::timerCallback()
+{
+    if (!isDragging)
+    {
+        double currentPosition = playerAudio.getPosition();
+        double totalLength = playerAudio.getLength();
+
+        positionSlider.setRange(0.0, totalLength, 0.01);
+        positionSlider.setValue(currentPosition, juce::dontSendNotification);
+
+        int currentInt = static_cast<int> (currentPosition);
+        int totalInt = static_cast<int> (totalLength);
+
+        int currentMinutes = currentInt / 60;
+        int currentSeconds = currentInt % 60;
+        int totalMinutes = totalInt / 60;
+        int totalSeconds = totalInt % 60;
+
+        juce::String time = juce::String::formatted("%02d:%02d / %02d:%02d",
+            currentMinutes, currentSeconds,
+            totalMinutes, totalSeconds);
+
+        timeLabel.setText(time, juce::dontSendNotification);
+    }
+}
+
+void PlayerGUI::sliderDragStarted(juce::Slider* slider)
+{
+    if (slider == &positionSlider)
+    {
+        isDragging = true;
+    }
+}
+
+void PlayerGUI::sliderDragEnded(juce::Slider* slider)
+{
+    if (slider == &positionSlider)
+    {
+        isDragging = false;
+        double newPosition = positionSlider.getValue();
+        playerAudio.setPosition(newPosition);
+    }
 }
 
 
@@ -57,6 +112,11 @@ void PlayerGUI::resized()
     nextButton.setBounds(440, y, 80, 40);*/
 
     volumeSlider.setBounds(20, 100, getWidth() - 40, 30);
+    positionSlider.setBounds(120, 140, getWidth() - 160, 30);
+
+    int labelWidth = 80;
+    int labelHeight = 20;
+    timeLabel.setBounds(20, positionSlider.getY() + 5, labelWidth, labelHeight);
 }
 
 void PlayerGUI::buttonClicked(juce::Button* button)
