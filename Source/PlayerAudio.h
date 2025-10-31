@@ -20,14 +20,23 @@ public:
     double getLength() const;
     void setmute(bool muted);
     bool ismuted()const;
+    void setspeed(double speed);
+    double getspeed() const;
 
 private:
+    
     juce::AudioFormatManager formatManager;
-    std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
     juce::AudioTransportSource transportSource;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlayerAudio)
+    std::unique_ptr<juce::ResamplingAudioSource> resampleSource;
+    std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
+   
+
         bool muted = false;
         float lastGain = 1.0f;
+        double currentSampleRate=44100.0;
+        double playbackSpeed = 1.0;
+
+//JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlayerAudio)
 
 };

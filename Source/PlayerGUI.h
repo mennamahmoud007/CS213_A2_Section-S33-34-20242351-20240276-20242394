@@ -4,7 +4,9 @@
 
 class PlayerGUI : public juce::Component,
     public juce::Button::Listener,
-    public juce::Slider::Listener
+    public juce::Slider::Listener,
+    public juce::Timer
+
 {
 public:
     PlayerGUI();
@@ -12,7 +14,7 @@ public:
 
     void paint(juce::Graphics& g) override;
     void resized() override;
-
+    void PlayerGUI::timerCallback() override;
     void prepareToPlay(int samplesPerBlockExpected, double sampleRate);
     void getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFill);
     void releaseResources();
@@ -24,8 +26,17 @@ private:
     juce::TextButton loadButton{ "Load File" };
     juce::TextButton restartButton{ "Restart" };
     juce::TextButton stopButton{ "Stop" };
-    juce::TextButton muteButton{ "Mute" };
     juce::Slider volumeSlider;
+
+    juce::Slider speedSlider;
+
+    juce::TextButton muteButton{ "Mute" };
+    double progressValue = 0.0;
+    juce::ProgressBar progressBar{ progressValue };
+    juce::Timer* timer = nullptr; 
+    juce::Label timeLabel;
+    juce::Colour currentBackground{ juce::Colours::darkgrey };
+
 
     std::unique_ptr<juce::FileChooser> fileChooser;
 

@@ -1,5 +1,9 @@
 #include <JuceHeader.h>
 #include "MainComponent.h"
+//Menna Tullah Mahmoud 20242351
+//task 3, 6, 9 + Bonus(Dynamic Mood Theme)
+/*I added a feature called Dynamic Mood Theme, which automatically changes the player’s background color based on the song’s speed
+when the music is fast, the UI turns cool and energetic; when it’s slow, it becomes warm and calm”*/
 
 // Our application class
 class SimpleAudioPlayer : public juce::JUCEApplication
