@@ -22,6 +22,9 @@ public:
     void setmute(bool muted);
     bool ismuted()const;
     void setLooping(bool willLoop);
+    void setmarkerA(double position);
+    void setmarkerB(double position);
+    void resetMarkers();
 
 private:
     juce::AudioFormatManager formatManager;
@@ -31,4 +34,7 @@ private:
     bool muted = false;
     float lastGain = 1.0f;
     bool isLooping = false;
+    bool a_bLooping = false;
+    double setA = 0.0, setB = 0.0;
+    bool isMarker_A = false, isMarker_B = false;
 };

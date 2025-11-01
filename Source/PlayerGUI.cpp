@@ -3,7 +3,8 @@
 PlayerGUI::PlayerGUI()
 {
     // Add buttons
-    for (auto* btn : { &loadButton, &restartButton , &stopButton, &muteButton, &playButton, &pauseButton, &startButton, &endButton, &muteButton, &loopButton })
+    for (auto* btn : { &loadButton, &restartButton , &stopButton, &muteButton, &playButton, &pauseButton, &startButton,
+        &endButton, &muteButton, &loopButton, &setA, &setB })
     {
         btn->addListener(this);
         addAndMakeVisible(btn);
@@ -108,6 +109,8 @@ void PlayerGUI::resized()
     endButton.setBounds(640, y, 80, 40);
     muteButton.setBounds(740, y, 80, 40);
     loopButton.setBounds(840, y, 80, 40);
+    setA.setBounds(940, y, 80, 40);
+    setB.setBounds(1040, y, 80, 40);
     /*prevButton.setBounds(340, y, 80, 40);
     nextButton.setBounds(440, y, 80, 40);*/
 
@@ -142,6 +145,16 @@ void PlayerGUI::buttonClicked(juce::Button* button)
                     playerAudio.LoadFile(file);
                 }
             });
+
+        loopButton.setButtonText("Loop");
+        loopButton.removeColour(juce::TextButton::buttonColourId);
+
+        playerAudio.resetMarkers();
+        setA.setButtonText("Marker A");
+        setA.removeColour(juce::TextButton::buttonColourId);
+        setB.setButtonText("Marker B");
+        setB.removeColour(juce::TextButton::buttonColourId);
+
     }
 
     if (button == &restartButton)
@@ -182,6 +195,20 @@ void PlayerGUI::buttonClicked(juce::Button* button)
         muteButton.setButtonText(state ? "unMute" : "Mute");
     }
 
+    if (button == &setA)
+    {
+        playerAudio.setmarkerA(playerAudio.getPosition());
+        setA.setButtonText("Marker A is Set");
+        setA.setColour(juce::TextButton::buttonColourId, juce::Colours::green);
+    }
+
+    if (button == &setB)
+    {
+        playerAudio.setmarkerB(playerAudio.getPosition());
+        setB.setButtonText("Marker B is Set");
+        setB.setColour(juce::TextButton::buttonColourId, juce::Colours::green);
+    }
+
     if (button == &loopButton)
     {
         isLooping = !isLooping;
@@ -189,10 +216,18 @@ void PlayerGUI::buttonClicked(juce::Button* button)
         if (isLooping)
         {
             loopButton.setButtonText("UnLoop");
+            loopButton.setColour(juce::TextButton::buttonColourId, juce::Colours::red);
         }
         else
         {
             loopButton.setButtonText("Loop");
+            loopButton.removeColour(juce::TextButton::buttonColourId);
+
+            playerAudio.resetMarkers();
+            setA.setButtonText("Marker A");
+            setA.removeColour(juce::TextButton::buttonColourId);
+            setB.setButtonText("Marker B");
+            setB.removeColour(juce::TextButton::buttonColourId);
         }
     }
 

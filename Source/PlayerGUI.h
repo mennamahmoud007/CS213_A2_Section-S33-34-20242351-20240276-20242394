@@ -34,6 +34,8 @@ private:
     juce::TextButton endButton{ "End" };
     juce::TextButton muteButton{ "Mute" };
     juce::TextButton loopButton{ "Loop" };
+    juce::TextButton setA{ "Marker A" };
+    juce::TextButton setB{ "Marker B" };
     bool isLooping = false;
 
     juce::Slider volumeSlider;

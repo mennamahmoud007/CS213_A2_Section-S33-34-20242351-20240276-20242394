@@ -18,7 +18,16 @@ void PlayerAudio::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
 void PlayerAudio::getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFill)
 {
     transportSource.getNextAudioBlock(bufferToFill);
-    if (isLooping && transportSource.getCurrentPosition() >= transportSource.getLengthInSeconds())
+
+    if (isLooping && isMarker_A && isMarker_B)
+    {
+        if (transportSource.getCurrentPosition() >= setB)
+        {
+            transportSource.setPosition(setA);
+            transportSource.start();
+        }
+    }
+    else if (isLooping && transportSource.getCurrentPosition() >= transportSource.getLengthInSeconds())
     {
         transportSource.setPosition(0.0);
         transportSource.start();
@@ -52,6 +61,7 @@ bool PlayerAudio::LoadFile(const juce::File& file)
             transportSource.start();
         }
     }
+    resetMarkers();
     return true;
 }
 
@@ -119,6 +129,27 @@ void PlayerAudio::setmute(bool newMuted)
 void PlayerAudio::setLooping(bool willLoop)
 {
     isLooping = willLoop;
+}
+
+void PlayerAudio::setmarkerA(double position)
+{
+    setA = position;
+    isMarker_A = true;
+    a_bLooping = true;
+}
+
+void PlayerAudio::setmarkerB(double position)
+{
+    setB = position;
+    isMarker_B = true;
+}
+
+void PlayerAudio::resetMarkers()
+{
+    setA = 0.0;
+    setB = 0.0;
+    isMarker_A = false;
+    isMarker_B = false;
 }
 
 
