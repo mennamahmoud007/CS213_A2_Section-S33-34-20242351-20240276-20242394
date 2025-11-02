@@ -152,6 +152,42 @@ void PlayerAudio::resetMarkers()
     isMarker_B = false;
 }
 
+void PlayerAudio::jumpForward(double seconds)
+{
+    double current = transportSource.getCurrentPosition();
+    double target = current + seconds;
+
+    if (isMarker_A && isMarker_B)
+    {
+        if (target > setB) target = setB;
+        if (target < setA) target = setA;
+    }
+    else
+    {
+        if (target > transportSource.getLengthInSeconds()) target = transportSource.getLengthInSeconds();
+        if (target < 0) target = 0;
+    }
+    transportSource.setPosition(target);
+}
+
+void PlayerAudio::jumpBackward(double seconds)
+{
+    double current = transportSource.getCurrentPosition();
+    double target = current - seconds;
+
+    if (isMarker_A && isMarker_B)
+    {
+        if (target < setA) target = setA;
+        if (target > setB) target = setB;
+    }
+    else
+    {
+        if (target < 0) target = 0;     
+        if (target > transportSource.getLengthInSeconds()) target = transportSource.getLengthInSeconds();
+    }
+    transportSource.setPosition(target);
+}
+
 
 
 

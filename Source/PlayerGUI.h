@@ -36,7 +36,11 @@ private:
     juce::TextButton loopButton{ "Loop" };
     juce::TextButton setA{ "Marker A" };
     juce::TextButton setB{ "Marker B" };
+    juce::TextButton jumpBack{ "10 Seconds Back" };
+    juce::TextButton jumpForward{ "10 Seconds Forward" };
+
     bool isLooping = false;
+    const double jump = 10.0;
 
     juce::Slider volumeSlider;
     juce::Slider positionSlider;

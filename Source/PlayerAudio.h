@@ -25,6 +25,8 @@ public:
     void setmarkerA(double position);
     void setmarkerB(double position);
     void resetMarkers();
+    void jumpForward(double seconds);
+    void jumpBackward(double seconds);
 
 private:
     juce::AudioFormatManager formatManager;
