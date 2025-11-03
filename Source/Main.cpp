@@ -1,10 +1,14 @@
+//Menna Tullah Mahmoud 20242351
+//task 3, 6, 9 + Bonus 1 (Dynamic Mood Theme) + Bonus 2 (task 13) + Bonus 3 (Gentle Stop)
+/*
+Bonus 1 (Dynamic Mood Theme): automatically changes the player’s background color based on the song’s speed
+when the music is fast, the UI turns cool and energetic; when it’s slow, it becomes warm and calm
+Bonus 3 (Gentle Stop): the audio to stop smoothly instead of abruptly. When the user presses the stop button
+the audio volume gradually decreases until it reaches zero, then playback is completely stopped
+*/
+
 #include <JuceHeader.h>
 #include "MainComponent.h"
-//Menna Tullah Mahmoud 20242351
-//task 3, 6, 9 + Bonus(Dynamic Mood Theme)
-/*I added a feature called Dynamic Mood Theme, which automatically changes the player’s background color based on the song’s speed
-when the music is fast, the UI turns cool and energetic; when it’s slow, it becomes warm and calm”*/
-
 // Our application class
 class SimpleAudioPlayer : public juce::JUCEApplication
 {

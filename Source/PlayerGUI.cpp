@@ -15,20 +15,20 @@ PlayerGUI::PlayerGUI()
     volumeSlider.addListener(this);
     addAndMakeVisible(volumeSlider);
 
-    addAndMakeVisible(progressBar);
-    startTimerHz(30); 
 
-    // time label (show current / total)
-    timeLabel.setText("0:00 / 0:00", juce::dontSendNotification);
-    timeLabel.setColour(juce::Label::textColourId, juce::Colours::white);
-    timeLabel.setJustificationType(juce::Justification::centred);
-    addAndMakeVisible(timeLabel);
-
+    //task 6
     speedSlider.setRange(0.25, 2.0, 0.25);
     speedSlider.setValue(1.0);
     speedSlider.addListener(this);
     addAndMakeVisible(speedSlider);
     speedSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 50, 20);
+    //task 9
+    addAndMakeVisible(progressBar);
+    startTimerHz(30); 
+    timeLabel.setText("0:00 / 0:00", juce::dontSendNotification);
+    timeLabel.setColour(juce::Label::textColourId, juce::Colours::white);
+    timeLabel.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(timeLabel);
 
 
 }
@@ -51,7 +51,7 @@ void PlayerGUI::releaseResources()
     playerAudio.releaseResources();
 }
 
-
+//Bonus 1 (Dynamic Mood Theme)
 void PlayerGUI::paint(juce::Graphics& g)
 {
     g.fillAll(currentBackground);
@@ -109,7 +109,7 @@ void PlayerGUI::buttonClicked(juce::Button* button)
         playerAudio.stop();
         playerAudio.setPosition(0.0);
     }
-
+//------------------------------------------task 3-------------------------------------------------------
     if (button == &muteButton)
     {
         bool state = !playerAudio.ismuted();
@@ -118,7 +118,21 @@ void PlayerGUI::buttonClicked(juce::Button* button)
     }
 
 }
+//---------------------------------------task 6--------------------------------------------------------
 
+void PlayerGUI::sliderValueChanged(juce::Slider* slider)
+{
+    if (slider == &volumeSlider)
+        playerAudio.setGain((float)slider->getValue());
+
+    if (slider == &speedSlider)
+    {
+        double speed = speedSlider.getValue();
+        playerAudio.setspeed(speed);
+    }
+
+}
+//--------------------------------------------task 9-----------------------------------------------------
 void PlayerGUI::timerCallback()
 {
     double pos = playerAudio.getPosition();
@@ -140,38 +154,29 @@ void PlayerGUI::timerCallback()
     timeLabel.setText(currentTime + " / " + totalTime, juce::dontSendNotification);
 
 
-    //------------------------ Bonus(Dynamic Mood Theme)-------------------------------------
+    //------------------------ Bonus 1 (Dynamic Mood Theme)-------------------------------------
 
     double speed = playerAudio.getspeed();
-    juce::Colour target;
-    if (speed < 0.75)
-        target = juce::Colour::fromRGB(255, 150, 50);  
-    else if (speed < 1.25)
-        target = juce::Colour::fromRGB(100, 180, 255);  
-    else
-        target = juce::Colour::fromRGB(140, 80, 220);   
+    double mix = juce::jlimit(0.0, 1.0, (speed - 0.25) / (2.0 - 0.25));
+    juce::Colour target = juce::Colours::blue.interpolatedWith(juce::Colours::red, mix);
 
- 
     const float interp = 0.08f;
     currentBackground = currentBackground.interpolatedWith(target, interp);
-
     
+
     repaint();
 
     progressBar.repaint();
 }
 
 
-
-void PlayerGUI::sliderValueChanged(juce::Slider* slider)
+//-------------------------------------Bonus 2 (task 13)--------------------------------------------------------
+void PlayerGUI::loadSession()
 {
-    if (slider == &volumeSlider)
-        playerAudio.setGain((float)slider->getValue());
+    playerAudio.loadSession();
+}
 
-    if (slider == &speedSlider)
-    {
-        double speed = speedSlider.getValue();
-        playerAudio.setspeed(speed);
-    }
-
+void PlayerGUI::saveSession()
+{
+    playerAudio.saveSession();
 }

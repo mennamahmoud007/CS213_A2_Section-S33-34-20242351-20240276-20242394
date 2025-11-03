@@ -18,6 +18,9 @@ public:
     void prepareToPlay(int samplesPerBlockExpected, double sampleRate);
     void getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFill);
     void releaseResources();
+    //Bonus 2(task 13)
+    void loadSession();
+    void saveSession();
 
 private:
     PlayerAudio playerAudio;
@@ -28,14 +31,15 @@ private:
     juce::TextButton stopButton{ "Stop" };
     juce::Slider volumeSlider;
 
-    juce::Slider speedSlider;
-
-    juce::TextButton muteButton{ "Mute" };
-    double progressValue = 0.0;
+    juce::TextButton muteButton{ "Mute" }; //task 3
+    juce::Slider speedSlider;   //task 6
+    //task 9
+    double progressValue = 0.0; 
     juce::ProgressBar progressBar{ progressValue };
     juce::Timer* timer = nullptr; 
     juce::Label timeLabel;
-    juce::Colour currentBackground{ juce::Colours::darkgrey };
+
+    juce::Colour currentBackground{ juce::Colours::darkgrey };//Bonus 1 (Dynamic Mood Theme)
 
 
     std::unique_ptr<juce::FileChooser> fileChooser;
