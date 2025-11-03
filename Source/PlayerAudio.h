@@ -1,4 +1,4 @@
-#pragma once							
+#pragma once
 #include <JuceHeader.h>
 
 class PlayerAudio
@@ -11,18 +11,24 @@ public:
     void getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFill);
     void releaseResources();
 
-    bool LoadFile(const juce::File& file);
+    bool loadFile(const juce::File& file);
     void start();
     void stop();
     void setGain(float gain);
     void setPosition(double pos);
     double getPosition() const;
     double getLength() const;
+    void setLooping(bool shouldLoop);
+    void mute(bool shouldMute);
+    bool isMuted() const;
 
 private:
     juce::AudioFormatManager formatManager;
     std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
     juce::AudioTransportSource transportSource;
+    bool muted = false;
+    float lastGain = 1.0f;
+    bool looping = false;
 
-     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlayerAudio)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlayerAudio)
 };
