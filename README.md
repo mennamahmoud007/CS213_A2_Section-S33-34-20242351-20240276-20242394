@@ -12,8 +12,8 @@ It includes individual players, playback controls, A–B looping, session saving
 - 🎚️ Volume control for each player  
 - 🎛️ Mix two tracks together with a live audio mixer  
 - 💾 Save and load playback sessions  
-- 🌙 Dynamic theme  
-- 🏷️ Display audio file metadata (title, length, etc.)
+- 🌙 Dynamic colored theme  
+- 🏷️ Display audio file metadata (title, artist, length, etc.)
 - 🖥️ Modern GUI built using JUCE components
 
   
