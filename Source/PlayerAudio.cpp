@@ -66,8 +66,8 @@ void PlayerAudio::stop()
 
 void PlayerAudio::getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFill)
 {
-  
-     resampleSource->getNextAudioBlock(bufferToFill);
+
+    resampleSource->getNextAudioBlock(bufferToFill);
 
     if (isLooping && isMarker_A && isMarker_B)
     {

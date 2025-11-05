@@ -8,8 +8,8 @@ PlayerGUI::PlayerGUI()
                        &endButton, &nextButton, &prevButton, &muteButton, &loopButton, &setA, &setB, &removeButton, &clearButton,
                        &jumpBack, &jumpForward,
 
-                       & loadButton2,& restartButton2 ,& stopButton2,& playButton2,& pauseButton2,& startButton2,
-                       & endButton2, &nextButton2, &prevButton2, &muteButton2,&loopButton2,&setA2,&setB2, &removeButton2, 
+                       &loadButton2,&restartButton2 ,&stopButton2,&playButton2,&pauseButton2,&startButton2,
+                       &endButton2, &nextButton2, &prevButton2, &muteButton2,&loopButton2,&setA2,&setB2, &removeButton2,
                        &clearButton2, &jumpBack2,&jumpForward2 })
     {
         btn->addListener(this);
@@ -41,7 +41,7 @@ PlayerGUI::PlayerGUI()
     addAndMakeVisible(metadataLabel1);
     metadataLabel2.setText("Track 2: -", juce::dontSendNotification);
     addAndMakeVisible(metadataLabel2);
-    
+
     // Playlist box
     playlistBox1.setModel(this);
     addAndMakeVisible(playlistBox1);
@@ -60,7 +60,7 @@ PlayerGUI::PlayerGUI()
     timeLabel2.setColour(juce::Label::textColourId, juce::Colours::white);
     timeLabel2.setFont(juce::Font(15.0f, juce::Font::bold));
     addAndMakeVisible(timeLabel2);
-    
+
     // Speed slider
     speedSlider.setRange(0.25, 2.0, 0.25);
     speedSlider.setValue(1.0);
@@ -93,8 +93,20 @@ void PlayerGUI::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
 
 void PlayerGUI::getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFill)
 {
+ 
+    juce::AudioBuffer<float> tempBuffer(bufferToFill.buffer->getNumChannels(), bufferToFill.numSamples);
+    tempBuffer.clear();
+
+    juce::AudioSourceChannelInfo tempInfo(&tempBuffer, 0, bufferToFill.numSamples);
+
     playerAudio.getNextAudioBlock(bufferToFill);
-    playerAudio2.getNextAudioBlock(bufferToFill);
+
+    playerAudio2.getNextAudioBlock(tempInfo);
+
+    for (int channel = 0; channel < bufferToFill.buffer->getNumChannels(); ++channel)
+    {
+        bufferToFill.buffer->addFrom(channel, bufferToFill.startSample, tempBuffer, channel, 0, bufferToFill.numSamples);
+    }
 }
 
 void PlayerGUI::releaseResources()
@@ -106,7 +118,16 @@ void PlayerGUI::releaseResources()
 
 void PlayerGUI::paint(juce::Graphics& g)
 {
-    g.fillAll(currentBackground);
+    int height = getHeight();
+    int halfHeight = height / 2;
+
+    // Paint the background for Track 1 (Top Half)
+    g.setColour(currentBackground);
+    g.fillRect(0, 0, getWidth(), halfHeight);
+
+    // Paint the background for Track 2 (Bottom Half)
+    g.setColour(currentBackground2);
+    g.fillRect(0, halfHeight, getWidth(), halfHeight);
 }
 
 void PlayerGUI::resized()
@@ -154,11 +175,11 @@ void PlayerGUI::resized()
         timeLabel.setBounds(20, positionSlider.getY() + 5, labelWidth, labelHeight);
 
         metadataLabel1.setBounds(170, y + 30, width - 180, 20);
-        playlistBox1.setBounds(20, y + 60, width - 40, 30);
+        playlistBox1.setBounds(20, y + 60, width - 40, 50);
     }
-    
+
     {
-        int y = halfHeight + 20;
+        int y = halfHeight + 10;
 
         loadButton2.setBounds(20, y, 100, 40);
         restartButton2.setBounds(140, y, 80, 40);
@@ -191,7 +212,7 @@ void PlayerGUI::resized()
         timeLabel2.setBounds(20, positionSlider2.getY() + 5, labelWidth, labelHeight);
 
         metadataLabel2.setBounds(170, y + 30, width - 180, 20);
-        playlistBox2.setBounds(20, y + 60, width - 40, 30);
+        playlistBox2.setBounds(20, y + 60, width - 40, 50);
     }
 }
 
@@ -204,15 +225,15 @@ void PlayerGUI::addFilesToPlaylist(int trackNumber)
             auto files = chooser.getResults();
             if (trackNumber == 1)
             {
-                for (auto& file : files) 
-                { 
+                for (auto& file : files)
+                {
                     playlist1.add(file);
-                    playlistFiles1.add(file.getFileName()); 
+                    playlistFiles1.add(file.getFileName());
                 }
 
-                if (currentIndex1 == -1 && playlist1.size() > 0) 
-                { 
-                    currentIndex1 = 0; loadAndPlayFile(playlist1[0], 1); 
+                if (currentIndex1 == -1 && playlist1.size() > 0)
+                {
+                    currentIndex1 = 0; loadAndPlayFile(playlist1[0], 1);
                 }
                 playlistBox1.updateContent();
 
@@ -227,16 +248,16 @@ void PlayerGUI::addFilesToPlaylist(int trackNumber)
             }
             else
             {
-                for (auto& file : files) 
-                { 
-                    playlist2.add(file); 
-                    playlistFiles2.add(file.getFileName()); 
+                for (auto& file : files)
+                {
+                    playlist2.add(file);
+                    playlistFiles2.add(file.getFileName());
                 }
 
                 if (currentIndex2 == -1 && playlist2.size() > 0)
-                { 
-                    currentIndex2 = 0; 
-                    loadAndPlayFile(playlist2[0], 2); 
+                {
+                    currentIndex2 = 0;
+                    loadAndPlayFile(playlist2[0], 2);
                 }
                 playlistBox2.updateContent();
 
@@ -257,18 +278,18 @@ void PlayerGUI::loadAndPlayFile(const juce::File& file, int trackNumber)
 {
     if (trackNumber == 1)
     {
-        if (playerAudio.LoadFile(file)) 
-        { 
-            playerAudio.setGain((float)volumeSlider.getValue()); 
-            playerAudio.start(); 
+        if (playerAudio.LoadFile(file))
+        {
+            playerAudio.setGain((float)volumeSlider.getValue());
+            playerAudio.start();
         }
     }
     else
     {
         if (playerAudio2.LoadFile(file))
-        { 
-            playerAudio2.setGain((float)volumeSlider2.getValue()); 
-            playerAudio2.start(); 
+        {
+            playerAudio2.setGain((float)volumeSlider2.getValue());
+            playerAudio2.start();
         }
     }
     updateMetadataDisplay(file, trackNumber);
@@ -337,16 +358,16 @@ void PlayerGUI::clearPlaylist(int trackNumber)
 {
     if (trackNumber == 1)
     {
-        playlist1.clear(); 
-        playlistFiles1.clear(); 
-        currentIndex1 = -1; 
+        playlist1.clear();
+        playlistFiles1.clear();
+        currentIndex1 = -1;
         playlistBox1.updateContent();
     }
     else
     {
-        playlist2.clear(); 
-        playlistFiles2.clear(); 
-        currentIndex2 = -1; 
+        playlist2.clear();
+        playlistFiles2.clear();
+        currentIndex2 = -1;
         playlistBox2.updateContent();
     }
 }
@@ -444,15 +465,15 @@ void PlayerGUI::buttonClicked(juce::Button* button)
     }
 
     else if (button == &prevButton && currentIndex1 >= 0 && playlist1.size() > 0)
-    { 
+    {
         currentIndex1 = (currentIndex1 - 1 + playlist1.size()) % playlist1.size();
-        loadAndPlayFile(playlist1[currentIndex1], 1); 
+        loadAndPlayFile(playlist1[currentIndex1], 1);
     }
 
     else if (button == &nextButton && currentIndex1 >= 0 && playlist1.size() > 0)
-    { 
-        currentIndex1 = (currentIndex1 + 1) % playlist1.size(); 
-        loadAndPlayFile(playlist1[currentIndex1], 1); 
+    {
+        currentIndex1 = (currentIndex1 + 1) % playlist1.size();
+        loadAndPlayFile(playlist1[currentIndex1], 1);
     }
 
     else if (button == &setA)
@@ -555,16 +576,16 @@ void PlayerGUI::buttonClicked(juce::Button* button)
         muteButton2.setButtonText(state2 ? "unMute" : "Mute");
     }
 
-    else if(button == &prevButton2 && currentIndex2 >= 0 && playlist2.size() > 0)
-    { 
+    else if (button == &prevButton2 && currentIndex2 >= 0 && playlist2.size() > 0)
+    {
         currentIndex2 = (currentIndex2 - 1 + playlist2.size()) % playlist2.size();
-        loadAndPlayFile(playlist2[currentIndex2], 2); 
+        loadAndPlayFile(playlist2[currentIndex2], 2);
     }
 
-    else if (button == &nextButton2 && currentIndex2 >= 0 && playlist2.size() > 0) 
-    { 
-        currentIndex2 = (currentIndex2 + 1) % playlist2.size(); 
-        loadAndPlayFile(playlist2[currentIndex2], 2); 
+    else if (button == &nextButton2 && currentIndex2 >= 0 && playlist2.size() > 0)
+    {
+        currentIndex2 = (currentIndex2 + 1) % playlist2.size();
+        loadAndPlayFile(playlist2[currentIndex2], 2);
     }
 
     else if (button == &setA2)
@@ -789,58 +810,58 @@ void PlayerGUI::updateProgressBar()
 
 void PlayerGUI::updatePositionSlider()
 {
-        if (!isDragging && currentIndex1 >= 0)
-        {
-            double currentPosition = playerAudio.getPosition();
-            double totalLength = playerAudio.getLength();
+    if (!isDragging && currentIndex1 >= 0)
+    {
+        double currentPosition = playerAudio.getPosition();
+        double totalLength = playerAudio.getLength();
 
-            positionSlider.setRange(0.0, totalLength, 0.01);
-            positionSlider.setValue(currentPosition, juce::dontSendNotification);
+        positionSlider.setRange(0.0, totalLength, 0.01);
+        positionSlider.setValue(currentPosition, juce::dontSendNotification);
 
-            int currentInt = static_cast<int>(currentPosition);
-            int totalInt = static_cast<int>(totalLength);
+        int currentInt = static_cast<int>(currentPosition);
+        int totalInt = static_cast<int>(totalLength);
 
-            int currentMinutes = currentInt / 60;
-            int currentSeconds = currentInt % 60;
-            int totalMinutes = totalInt / 60;
-            int totalSeconds = totalInt % 60;
+        int currentMinutes = currentInt / 60;
+        int currentSeconds = currentInt % 60;
+        int totalMinutes = totalInt / 60;
+        int totalSeconds = totalInt % 60;
 
-            juce::String time = juce::String::formatted("%02d:%02d / %02d:%02d",
-                currentMinutes, currentSeconds,
-                totalMinutes, totalSeconds);
+        juce::String time = juce::String::formatted("%02d:%02d / %02d:%02d",
+            currentMinutes, currentSeconds,
+            totalMinutes, totalSeconds);
 
-            timeLabel.setText(time, juce::dontSendNotification);
-        }
+        timeLabel.setText(time, juce::dontSendNotification);
+    }
 
-        if (!isDragging2 && currentIndex2 >= 0)
-        {
-            double currentPosition = playerAudio2.getPosition();
-            double totalLength = playerAudio2.getLength();
+    if (!isDragging2 && currentIndex2 >= 0)
+    {
+        double currentPosition = playerAudio2.getPosition();
+        double totalLength = playerAudio2.getLength();
 
-            positionSlider2.setRange(0.0, totalLength, 0.01);
-            positionSlider2.setValue(currentPosition, juce::dontSendNotification);
+        positionSlider2.setRange(0.0, totalLength, 0.01);
+        positionSlider2.setValue(currentPosition, juce::dontSendNotification);
 
-            int currentInt = static_cast<int>(currentPosition);
-            int totalInt = static_cast<int>(totalLength);
+        int currentInt = static_cast<int>(currentPosition);
+        int totalInt = static_cast<int>(totalLength);
 
-            int currentMinutes = currentInt / 60;
-            int currentSeconds = currentInt % 60;
-            int totalMinutes = totalInt / 60;
-            int totalSeconds = totalInt % 60;
+        int currentMinutes = currentInt / 60;
+        int currentSeconds = currentInt % 60;
+        int totalMinutes = totalInt / 60;
+        int totalSeconds = totalInt % 60;
 
-            juce::String time = juce::String::formatted("%02d:%02d / %02d:%02d",
-                currentMinutes, currentSeconds,
-                totalMinutes, totalSeconds);
+        juce::String time = juce::String::formatted("%02d:%02d / %02d:%02d",
+            currentMinutes, currentSeconds,
+            totalMinutes, totalSeconds);
 
-            timeLabel2.setText(time, juce::dontSendNotification);
-        }
+        timeLabel2.setText(time, juce::dontSendNotification);
+    }
 
 }
 
 void PlayerGUI::timerCallback()
 {
-    updatePositionSlider();  
-    updateProgressBar();   
+    updatePositionSlider();
+    updateProgressBar();
 
     // Speed for Track 1
     double speed = playerAudio.getspeed();
@@ -863,30 +884,30 @@ void PlayerGUI::timerCallback()
 
 void PlayerGUI::sliderDragStarted(juce::Slider* slider)
 {
-        if (slider == &positionSlider)
-        {
-            isDragging = true;
-        }
-        else if(slider == &positionSlider2)
-        {
-            isDragging2 = true;
-        }
+    if (slider == &positionSlider)
+    {
+        isDragging = true;
+    }
+    else if (slider == &positionSlider2)
+    {
+        isDragging2 = true;
+    }
 }
 
 void PlayerGUI::sliderDragEnded(juce::Slider* slider)
 {
-        if (slider == &positionSlider)
-        {
-            isDragging = false;
-            double newPosition = positionSlider.getValue();
-            playerAudio.setPosition(newPosition);
-        }
-        else if (slider == &positionSlider2)
-        {
-            isDragging2 = false;
-            double newPosition2 = positionSlider2.getValue();
-            playerAudio2.setPosition(newPosition2);
-        }
+    if (slider == &positionSlider)
+    {
+        isDragging = false;
+        double newPosition = positionSlider.getValue();
+        playerAudio.setPosition(newPosition);
+    }
+    else if (slider == &positionSlider2)
+    {
+        isDragging2 = false;
+        double newPosition2 = positionSlider2.getValue();
+        playerAudio2.setPosition(newPosition2);
+    }
 }
 
 
@@ -897,8 +918,7 @@ void PlayerGUI::loadSession()
 }
 
 void PlayerGUI::saveSession()
-{ 
+{
     playerAudio.saveSession();
     playerAudio2.saveSession();
 }
-

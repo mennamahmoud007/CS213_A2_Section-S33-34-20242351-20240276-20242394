@@ -6,7 +6,7 @@ Repo Link: https://github.com/mennamahmoud007/CS213_A2_Section-S33-34-20242351-2
 CS213_A2_Section-S33/34
 Shrouk Hani — ID: 20240276 — Tasks: 2, 5, 8 
 Menna Tullah Mahmoud — ID: 20242351 — Tasks: 3, 6, 9 + Bonus 1 (task 13) + Bonus 2 (Dynamic Mood Theme) + Bonus 3 (Gentle Stop)
-Yasmin Sherif — ID: 20242394 — Tasks: 4, 7, 10
+Yasmin Sherif — ID: 20242394 — Tasks: 4, 7, 10 + Bonus 1 (task 12) 
  */
 
 #include <JuceHeader.h>

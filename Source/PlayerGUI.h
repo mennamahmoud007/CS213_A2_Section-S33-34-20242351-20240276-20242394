@@ -31,9 +31,9 @@ public:
     void clearPlaylist(int trackNumber);
 
     int getNumRows() override;
-    int getNumRows2() ;
+    int getNumRows2();
     void paintListBoxItem(int row, juce::Graphics& g, int width, int height, bool selected) override;
-    void paintListBoxItem2(int row, juce::Graphics& g, int width, int height, bool selected) ;
+    void paintListBoxItem2(int row, juce::Graphics& g, int width, int height, bool selected);
     void selectedRowsChanged(int lastRow) override;
     void selectedRowsChanged2(int lastRow);
 
@@ -81,7 +81,7 @@ private:
     juce::Slider positionSlider;
     juce::Slider positionSlider2;
 
-    juce::Slider speedSlider;   
+    juce::Slider speedSlider;
     juce::Slider speedSlider2;
 
     juce::Slider volumeSlider;

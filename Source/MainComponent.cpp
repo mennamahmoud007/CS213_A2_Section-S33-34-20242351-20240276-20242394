@@ -5,14 +5,14 @@ MainComponent::MainComponent()
     addAndMakeVisible(player1);
     setSize(500, 250);
     setAudioChannels(0, 2);
-   
+
     player1.prepareToPlay(512, 44100);
     player1.loadSession();
 }
 
 MainComponent::~MainComponent()
 {
-   
+
     player1.saveSession();
     shutdownAudio();
 }
