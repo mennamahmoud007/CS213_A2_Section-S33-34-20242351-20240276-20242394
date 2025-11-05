@@ -56,11 +56,13 @@ bool PlayerAudio::LoadFile(const juce::File& file)
 
 void PlayerAudio::start()
 {
+    transportSource.setGain(lastGain);
     transportSource.start();
 }
 
 void PlayerAudio::stop()
 {
+    lastGain = transportSource.getGain();
     fadingOut = true;
 }
 

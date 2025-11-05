@@ -93,7 +93,7 @@ void PlayerGUI::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
 
 void PlayerGUI::getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFill)
 {
- 
+
     juce::AudioBuffer<float> tempBuffer(bufferToFill.buffer->getNumChannels(), bufferToFill.numSamples);
     tempBuffer.clear();
 
@@ -212,7 +212,7 @@ void PlayerGUI::resized()
         timeLabel2.setBounds(20, positionSlider2.getY() + 5, labelWidth, labelHeight);
 
         metadataLabel2.setBounds(170, y + 30, width - 180, 20);
-        playlistBox2.setBounds(20, y + 60, width - 40, 50);
+        playlistBox2.setBounds(20, y + 60, width - 40, 30);
     }
 }
 
@@ -246,7 +246,8 @@ void PlayerGUI::addFilesToPlaylist(int trackNumber)
                 setB.setButtonText("Marker B");
                 setB.removeColour(juce::TextButton::buttonColourId);
             }
-            else
+
+            else if (trackNumber == 2)
             {
                 for (auto& file : files)
                 {
@@ -644,121 +645,6 @@ void PlayerGUI::buttonClicked(juce::Button* button)
         playerAudio2.jumpBackward(jump);
     }
 }
-
-//void PlayerGUI::buttonClicked(juce::Button* button)             
-//{
-//    if (button == &loadButton)
-//    {
-//        juce::FileChooser chooser("Select audio files...",
-//            juce::File{},
-//            "*.wav;*.mp3");
-//
-//        fileChooser = std::make_unique<juce::FileChooser>(
-//            "Select an audio file...",
-//            juce::File{},
-//            "*.wav;*.mp3");
-//
-//        fileChooser->launchAsync(
-//            juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles,
-//            [this](const juce::FileChooser& fc)
-//            {
-//                auto file = fc.getResult();
-//                if (file.existsAsFile())
-//                {
-//                    playerAudio.LoadFile(file);
-//                }
-//            });
-//        loopButton.setButtonText("Loop");
-//        loopButton.removeColour(juce::TextButton::buttonColourId);
-//
-//        playerAudio.resetMarkers();
-//        setA.setButtonText("Marker A");
-//        setA.removeColour(juce::TextButton::buttonColourId);
-//        setB.setButtonText("Marker B");
-//        setB.removeColour(juce::TextButton::buttonColourId);
-//    }
-//
-//    if (button == &restartButton)
-//    {
-//        playerAudio.start();
-//    }
-//
-//    if (button == &stopButton)
-//    {
-//        playerAudio.stop();
-//        playerAudio.setPosition(0.0);
-//    }
-//
-//    if (button == &pauseButton)
-//    {
-//        playerAudio.stop();
-//    }
-//
-//    if (button == &startButton)
-//    {
-//        playerAudio.setPosition(0.0);
-//    }
-//
-//    if (button == &endButton)
-//    {
-//        playerAudio.goToEnd();
-//    }
-//
-//    if (button == &muteButton)
-//    {
-//        bool state = !playerAudio.ismuted();
-//        playerAudio.setmute(state);
-//        muteButton.setButtonText(state ? "unMute" : "Mute");
-//    }
-//
-//    if (button == &setA)
-//    {
-//        playerAudio.setmarkerA(playerAudio.getPosition());
-//        setA.setButtonText("Marker A is Set");
-//        setA.setColour(juce::TextButton::buttonColourId, juce::Colours::green);
-//    }
-//
-//    if (button == &setB) 
-//    {
-//        playerAudio.setmarkerB(playerAudio.getPosition());
-//        setB.setButtonText("Marker B is Set");
-//        setB.setColour(juce::TextButton::buttonColourId, juce::Colours::green);
-//    }
-//
-//    if (button == &loopButton)
-//    {
-//        isLooping = !isLooping;
-//        playerAudio.setLooping(isLooping);
-//        if (isLooping)
-//        {
-//            loopButton.setButtonText("UnLoop");
-//            loopButton.setColour(juce::TextButton::buttonColourId, juce::Colours::red);
-//        }
-//        else
-//        {
-//            loopButton.setButtonText("Loop");
-//            loopButton.removeColour(juce::TextButton::buttonColourId);
-//
-//            playerAudio.resetMarkers();
-//            setA.setButtonText("Marker A");
-//            setA.removeColour(juce::TextButton::buttonColourId);
-//            setB.setButtonText("Marker B");
-//            setB.removeColour(juce::TextButton::buttonColourId);
-//        }
-//    }
-//
-//    if (button == &jumpForward)
-//    {
-//        playerAudio.jumpForward(jump);
-//    }
-//
-//    if (button == &jumpBack)
-//    {
-//        playerAudio.jumpBackward(jump);
-//    }
-//
-//}
-
 
 void PlayerGUI::sliderValueChanged(juce::Slider* slider)
 {
