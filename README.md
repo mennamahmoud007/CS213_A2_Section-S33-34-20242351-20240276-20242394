@@ -15,3 +15,5 @@ It includes individual players, playback controls, A–B looping, session saving
 - 🌙 Dynamic theme  
 - 🏷️ Display audio file metadata (title, length, etc.)
 - 🖥️ Modern GUI built using JUCE components
+
+  
