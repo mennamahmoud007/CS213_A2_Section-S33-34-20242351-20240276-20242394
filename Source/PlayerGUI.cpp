@@ -212,7 +212,7 @@ void PlayerGUI::resized()
         timeLabel2.setBounds(20, positionSlider2.getY() + 5, labelWidth, labelHeight);
 
         metadataLabel2.setBounds(170, y + 30, width - 180, 20);
-        playlistBox2.setBounds(20, y + 60, width - 40, 30);
+        playlistBox2.setBounds(20, y + 60, width - 40, 50);
     }
 }
 
