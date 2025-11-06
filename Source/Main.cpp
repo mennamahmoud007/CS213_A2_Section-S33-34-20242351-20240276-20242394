@@ -1,6 +1,6 @@
 /*
-Document Link:
-Video Link:
+Document Link: https://drive.google.com/file/d/1hmnmzOvaO6E9ZsnZCDQA7pkFc5EolQwi/view?usp=sharing
+Video Link: https://drive.google.com/file/d/1ddSHwqhR4VjjJ47KGZJn-3ecHfgJaYLY/view?usp=sharing
 Repo Link: https://github.com/mennamahmoud007/CS213_A2_Section-S33-34-20242351-20240276-20242394
 
 CS213_A2_Section-S33/34
