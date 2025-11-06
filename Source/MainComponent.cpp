@@ -3,7 +3,7 @@
 MainComponent::MainComponent()
 {
     addAndMakeVisible(player1);
-    setSize(500, 250);
+    setSize(1280, 760);
     setAudioChannels(0, 2);
 
     player1.prepareToPlay(512, 44100);

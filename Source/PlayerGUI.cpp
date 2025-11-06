@@ -175,7 +175,7 @@ void PlayerGUI::resized()
         timeLabel.setBounds(20, positionSlider.getY() + 5, labelWidth, labelHeight);
 
         metadataLabel1.setBounds(170, y + 30, width - 180, 20);
-        playlistBox1.setBounds(20, y + 60, width - 40, 50);
+        playlistBox1.setBounds(20, y + 60, width - 40, 40);
     }
 
     {
@@ -212,7 +212,7 @@ void PlayerGUI::resized()
         timeLabel2.setBounds(20, positionSlider2.getY() + 5, labelWidth, labelHeight);
 
         metadataLabel2.setBounds(170, y + 30, width - 180, 20);
-        playlistBox2.setBounds(20, y + 60, width - 40, 50);
+        playlistBox2.setBounds(20, y + 60, width - 40, 40);
     }
 }
 
@@ -333,6 +333,7 @@ void PlayerGUI::removeSelected(int trackNumber)
     {
         playlist1.remove(currentIndex1);
         playlistFiles1.remove(currentIndex1);
+        playerAudio.stop();
         if (playlist1.size() > 0)
         {
             currentIndex1 = juce::jlimit(0, playlist1.size() - 1, currentIndex1);
@@ -345,6 +346,7 @@ void PlayerGUI::removeSelected(int trackNumber)
     {
         playlist2.remove(currentIndex2);
         playlistFiles2.remove(currentIndex2);
+        playerAudio2.stop();
         if (playlist2.size() > 0)
         {
             currentIndex2 = juce::jlimit(0, playlist2.size() - 1, currentIndex2);
